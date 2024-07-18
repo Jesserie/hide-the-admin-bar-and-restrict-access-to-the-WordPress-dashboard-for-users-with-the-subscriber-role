@@ -1,0 +1,16 @@
+// Hide admin bar for subscribers
+add_action('after_setup_theme', 'hide_admin_bar_for_subscribers');
+function hide_admin_bar_for_subscribers() {
+    if (current_user_can('subscriber')) {
+        add_filter('show_admin_bar', '__return_false');
+    }
+}
+
+// Redirect subscribers away from the admin dashboard
+add_action('admin_init', 'redirect_subscribers_from_admin');
+function redirect_subscribers_from_admin() {
+    if (current_user_can('subscriber') && !defined('DOING_AJAX')) {
+        wp_redirect(home_url());
+        exit;
+    }
+}
